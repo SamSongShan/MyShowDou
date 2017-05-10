@@ -2,6 +2,8 @@ package com.example.a11355.myshowdou;
 
 import android.app.Application;
 
+import com.example.a11355.myshowdou.Utils.ConfigConstants;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.wenming.library.LogReport;
 import com.wenming.library.save.imp.CrashWriter;
 import com.wenming.library.upload.email.EmailReporter;
@@ -17,6 +19,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fresco.initialize(this, ConfigConstants.getImagePipelineConfig(this));
         initCrashReport();
     }
 

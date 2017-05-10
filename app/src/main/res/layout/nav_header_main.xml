@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -12,24 +12,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_gravity="center"
+        android:id="@+id/sdv"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        fresco:viewAspectRatio="1.33"
+        fresco:placeholderImageScaleType="fitCenter"
+        fresco:placeholderImage="@mipmap/ic_launcher"
+        fresco:failureImage="@mipmap/img_fail"
+        fresco:roundAsCircle="true"
+        fresco:failureImageScaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
+        android:text="点击登录"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:layout_gravity="center"
+        android:id="@+id/tv_signing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
+        android:text="个性签名" />
 
 </LinearLayout>
