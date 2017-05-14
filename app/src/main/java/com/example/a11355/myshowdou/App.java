@@ -3,6 +3,7 @@ package com.example.a11355.myshowdou;
 import android.app.Application;
 
 import com.example.a11355.myshowdou.Utils.ConfigConstants;
+import com.example.a11355.myshowdou.Utils.OkHttpUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.wenming.library.LogReport;
 import com.wenming.library.save.imp.CrashWriter;
@@ -19,6 +20,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        OkHttpUtil.initOkHttp();
         Fresco.initialize(this, ConfigConstants.getImagePipelineConfig(this));
         initCrashReport();
     }

@@ -1,36 +1,61 @@
 package com.example.a11355.myshowdou;
 
-import android.os.Bundle;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.a11355.myshowdou.Base.BaseActivity;
+import com.example.a11355.myshowdou.Base.BaseDialog;
 import com.example.a11355.myshowdou.Knowledges.KnowledgesFragment;
 import com.example.a11355.myshowdou.News.NewsFragment;
 import com.example.a11355.myshowdou.Photos.PhotosFragment;
+import com.example.a11355.myshowdou.Utils.Constant;
+import com.example.a11355.myshowdou.Utils.OkHttpUtil;
+import com.example.a11355.myshowdou.Utils.ToastUtil;
+import com.example.a11355.myshowdou.Utils.Util;
 import com.example.a11355.myshowdou.Videos.VideosFragment;
+import com.example.a11355.myshowdou.custom.DownloadDialog;
+import com.example.a11355.myshowdou.custom.NewVersionDialog;
+
+import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
+import static android.R.attr.versionName;
+
 
 /*
 * 主Activity
 *
 * */
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener {
+        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener {
 
     @BindView(R.id.rg)
     RadioGroup rg;
@@ -40,6 +65,18 @@ public class MainActivity extends BaseActivity
     private VideosFragment videosFragment;
     private PhotosFragment photosFragment;
     private KnowledgesFragment knowledgesFragment;
+    private String versionNum;
+
+    private boolean isExit = false;//退出标识
+    private boolean isForce;//是否强制升级
+    private Handler handler = new Handler();
+    private String ver;
+    private String downloadUrl;
+    private String description;
+    private NewVersionDialog newVersionDialog;
+    private String filePath;
+    private DownloadDialog downloadDialog;
+
 
     @Override
     protected int getViewResId() {
@@ -48,6 +85,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void init() {
+        Bmob.initialize(this, "a86f4153e71e9561f941ea31ad91384f");//初始化bomb
+        String versionNum = getVersionNum();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,7 +109,32 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         rg.setOnCheckedChangeListener(this);
-        rg.getChildAt(page).performClick();    }
+        rg.getChildAt(page).performClick();
+    }
+
+    private void update(String versionNum) {
+        isForce = false;
+        String charAt0 = versionNum.charAt(0) + "";
+        if ("V".equals(charAt0) || "v".equals(charAt0)) {
+            ver = versionNum.substring(1, versionNum.length());
+        }
+        if ("V".equals(charAt0)) {
+            isForce = true;
+        }
+        int needUpdate = Util.isNeedUpdate(Util.getAppVersion(this), ver);
+        switch (needUpdate) {
+            case 2://需要强制更新
+                isForce = true;
+            case 1://需要更新
+                newVersionDialog = NewVersionDialog.newInstance("发现新版本 " + versionNum, description, isForce == true ? "force" : "取消", "更新");
+                newVersionDialog.setOnItemClickListener(this);
+                newVersionDialog.show(getFragmentManager());
+                break;
+        }
+
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -77,7 +142,18 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (isExit) {
+                System.exit(0);
+            } else {
+                ToastUtil.initToast(this, "再按一次退出" + Util.getAppName(this));
+                isExit = true;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isExit = false;
+                    }
+                }, 3000);//5秒内再按后退键真正退出
+            }
         }
     }
 
@@ -128,12 +204,7 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -210,6 +281,123 @@ public class MainActivity extends BaseActivity
         }
         if (knowledgesFragment != null) {
             transaction.hide(knowledgesFragment);
+        }
+
+
+    }
+
+
+    public String getVersionNum() {
+
+        //查找Person表里面id为6b6c11c537的数据
+        BmobQuery<VersionController> query = new BmobQuery<>();
+        query.findObjects(new FindListener<VersionController>() {
+            @Override
+            public void done(List<VersionController> list, BmobException e) {
+                if (e == null) {
+                    versionNum = list.get(0).getVersionNum();
+                    downloadUrl = list.get(0).getDownloadUrl();
+                    description = list.get(0).getDescription();
+                    checkStoragePermission();
+
+
+                }
+
+            }
+        });
+        return versionNum;
+    }
+
+
+
+    @Override
+    public void onItemClick(View v) {
+        if (newVersionDialog != null) {
+            newVersionDialog.dismiss();
+
+        }
+
+        downloadDialog = DownloadDialog.newInstance(Util.getAppName(this) + versionNum, isForce);
+        downloadDialog.show(getFragmentManager(),"download");
+        filePath = Environment.getExternalStorageDirectory() + "/Download/" + Util.getAppName(this) +
+                "_" + versionName + ".apk";
+        Log.e("loge", "Download: " + filePath);
+        OkHttpUtil.fileDownload(downloadUrl, filePath, this, new OkHttpUtil.OnDataListener() {
+            @Override
+            public void onResponse(String url, String json) {//下载完成
+                TextView btnInstall = downloadDialog.getBtnInstall();
+                btnInstall.setSelected(true);
+                btnInstall.setText("安装");
+                btnInstall.setClickable(true);
+                btnInstall.setOnClickListener(MainActivity.this);
+                jumpInstall();
+            }
+
+            @Override
+            public void onFailure(String url, String error) {
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        jumpInstall();
+    }
+
+    /**
+     * 跳转到安装页面
+     */
+    private void jumpInstall() {
+        File apkFile = new File(filePath);
+        if (apkFile.exists()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+            startActivity(intent);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+
+    @Override
+    public void onProgress(final int rate) {
+        ProgressBar pb = downloadDialog.getProgressBar();
+        final TextView btnInstall = downloadDialog.getBtnInstall();
+        if (pb != null) {
+            pb.setProgress(rate);
+        }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (btnInstall != null) {
+                    btnInstall.setText("下载中(" + rate + "%)");
+                    if (rate == 100) {
+                        btnInstall.setText("安装");
+                    }
+                }
+            }
+        });
+    }
+
+    private void checkStoragePermission() {
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Constant.Code.PermissionCode);
+        }else {
+            update(versionNum);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == Constant.Code.PermissionCode) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                ToastUtil.initToast(this, "存储权限被拒绝，使用过程中可能会出现未知错误");
+            }else {
+                update(versionNum);
+
+            }
         }
     }
 }

@@ -8,5 +8,6 @@
     <color name="primaryBg">#F7F7FA</color>
     <color name="colorBlack">#000</color>
     <color name="text_light">#b4bfc2</color>
+    <color name="colorGray">#888</color>
 
 </resources>
