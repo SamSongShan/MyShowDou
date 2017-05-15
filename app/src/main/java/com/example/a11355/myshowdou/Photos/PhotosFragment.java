@@ -16,7 +16,10 @@ import butterknife.Unbinder;
  */
 public class PhotosFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-
+/*
+* 图片
+*
+* */
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
     Unbinder unbinder;

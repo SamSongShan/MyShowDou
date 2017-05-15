@@ -1,7 +1,6 @@
 package com.example.a11355.myshowdou.Knowledges;
 
 
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
@@ -12,7 +11,7 @@ import butterknife.BindView;
 import butterknife.Unbinder;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 技术
  */
 public class KnowledgesFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 

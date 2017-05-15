@@ -10,7 +10,10 @@ import com.example.a11355.myshowdou.R;
 
 import butterknife.BindView;
 import butterknife.Unbinder;
-
+/*
+* 视频
+*
+* */
 /**
  * A simple {@link Fragment} subclass.
  */

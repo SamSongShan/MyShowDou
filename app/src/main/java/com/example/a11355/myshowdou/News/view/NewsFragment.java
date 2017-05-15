@@ -1,4 +1,4 @@
-package com.example.a11355.myshowdou.News;
+package com.example.a11355.myshowdou.News.view;
 
 
 import android.support.v4.app.Fragment;
@@ -14,9 +14,12 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,NewsView  {
 
-
+/*
+* 新闻
+*
+* */
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
     Unbinder unbinder;

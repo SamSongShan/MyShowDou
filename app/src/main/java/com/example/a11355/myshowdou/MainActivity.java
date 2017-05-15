@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.example.a11355.myshowdou.Base.BaseActivity;
 import com.example.a11355.myshowdou.Base.BaseDialog;
 import com.example.a11355.myshowdou.Knowledges.KnowledgesFragment;
-import com.example.a11355.myshowdou.News.NewsFragment;
+import com.example.a11355.myshowdou.News.view.NewsFragment;
 import com.example.a11355.myshowdou.Photos.PhotosFragment;
 import com.example.a11355.myshowdou.Utils.Constant;
 import com.example.a11355.myshowdou.Utils.OkHttpUtil;
