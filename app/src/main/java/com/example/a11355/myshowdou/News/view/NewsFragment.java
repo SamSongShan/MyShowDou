@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.a11355.myshowdou.Base.BaseFragment;
+import com.example.a11355.myshowdou.Base.BasePresenter;
 import com.example.a11355.myshowdou.R;
 
 import butterknife.BindView;
@@ -39,4 +40,16 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onRefresh() {
 
     }
+
+    @Override
+    public void LoadData() {
+
+    }
+
+    @Override
+    public void getPresenter(BasePresenter p) {
+        p.attachView(this);
+    }
+
+
 }

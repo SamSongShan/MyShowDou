@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.a11355.myshowdou.Base.BaseFragment;
+import com.example.a11355.myshowdou.News.view.NewsView;
 import com.example.a11355.myshowdou.R;
 
 import butterknife.BindView;
@@ -13,7 +14,7 @@ import butterknife.Unbinder;
 /**
  * 技术
  */
-public class KnowledgesFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class KnowledgesFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener ,NewsView{
 
 
     @BindView(R.id.srl)
@@ -33,6 +34,11 @@ public class KnowledgesFragment extends BaseFragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
+
+    }
+
+    @Override
+    public void LoadData() {
 
     }
 }
