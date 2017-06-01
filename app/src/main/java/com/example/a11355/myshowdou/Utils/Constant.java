@@ -6,7 +6,7 @@ package com.example.a11355.myshowdou.Utils;
 public interface Constant {
 
     interface URL {
-//        String BaseUrl = "http://192.168.0.220:8029/Index.asmx/";
+//        String BaseUrl = "http://c.m.163.com/";
         String BaseUrl = "https://app.zhdzxyg.com/Index.asmx/";
 //        String BaseImg = "http://192.168.0.220:8029";
         String BaseImg = "https://app.zhdzxyg.com";
@@ -15,6 +15,8 @@ public interface Constant {
     }
 
     interface Strings {
+        String[] NewsDetailTitle = {"头条", "NBA", "汽车", "笑话"};
+
         //手机号正则
         String RegexMobile = "^1(3[0-9]|4[5,7]|5[0-9]|7[0-9]|8[0-9])\\d{8}$";
         //邮箱正则

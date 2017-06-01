@@ -6,5 +6,4 @@ package com.example.a11355.myshowdou.Base;
 
 public interface BaseView {
     void LoadData();
-    void getPresenter(BasePresenter p);
 }

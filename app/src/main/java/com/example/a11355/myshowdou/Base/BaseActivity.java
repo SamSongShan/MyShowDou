@@ -10,13 +10,15 @@ import butterknife.Unbinder;
 /**
  * 所有Activity的基类
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity <V,T extends BasePresenter<V>> extends AppCompatActivity {
 
     private Unbinder unbinder;
+    public T presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = initPresenter();
         getBundle(savedInstanceState);
         setContentView(getViewResId());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//手机竖屏
@@ -37,5 +39,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
+        presenter.dettach();
+
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.attach((V)this);
+    }
+    // 实例化presenter
+    public abstract T initPresenter();
 }

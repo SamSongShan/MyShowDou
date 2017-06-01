@@ -54,8 +54,8 @@ import static android.R.attr.versionName;
 * 主Activity
 *
 * */
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener {
+public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
+        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener ,MainView{
 
     @BindView(R.id.rg)
     RadioGroup rg;
@@ -111,6 +111,12 @@ public class MainActivity extends BaseActivity
         rg.setOnCheckedChangeListener(this);
         rg.getChildAt(page).performClick();
     }
+
+    @Override
+    public MainPresenterImpl initPresenter() {
+        return new MainPresenterImpl();
+    }
+
 
     private void update(String versionNum) {
         isForce = false;

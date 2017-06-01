@@ -5,5 +5,5 @@ package com.example.a11355.myshowdou.Base;
  */
 
 public interface BaseModel {
-    void LoadData();
+
 }

@@ -1,29 +1,39 @@
 package com.example.a11355.myshowdou.News.view;
 
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.a11355.myshowdou.Base.BaseFragment;
-import com.example.a11355.myshowdou.Base.BasePresenter;
 import com.example.a11355.myshowdou.R;
+import com.example.a11355.myshowdou.Utils.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,NewsView  {
+public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-/*
-* 新闻
-*
-* */
+    /*
+    * 新闻
+    *
+    * */
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
-    Unbinder unbinder;
+    @BindView(R.id.tab)
+    TabLayout tab;
+    @BindView(R.id.vp)
+    ViewPager vp;
+    private List<Fragment> fragments;
 
     @Override
     protected int getViewResId() {
@@ -32,23 +42,33 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void init(View v) {
-        srl.setOnRefreshListener(this);
+        fragments = new ArrayList<>();
 
+        for (int i = 0; i < Constant.Strings.NewsDetailTitle.length; i++) {
+            fragments.add(NewsDetailFragment.instantiate(getActivity(),));
+        }
+        srl.setOnRefreshListener(this);
+        vp.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return Constant.Strings.NewsDetailTitle.length;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return Constant.Strings.NewsDetailTitle[position];
+            }
+        });
     }
 
     @Override
     public void onRefresh() {
 
-    }
-
-    @Override
-    public void LoadData() {
-
-    }
-
-    @Override
-    public void getPresenter(BasePresenter p) {
-        p.attachView(this);
     }
 
 

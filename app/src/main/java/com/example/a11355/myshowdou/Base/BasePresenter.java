@@ -1,10 +1,14 @@
 package com.example.a11355.myshowdou.Base;
 
-/**
- * Created by 11355 on 2017/5/18.
- */
+public abstract class BasePresenter<T> {
 
-public interface BasePresenter<T> {
-    void attachView(T v);
-    void unAttachView(T v);
+     public T mView;    
+
+     public void attach(T mView) {       
+         this.mView = mView;    
+     }    
+
+     public void dettach() {        
+         mView = null;    
+     }
 }
