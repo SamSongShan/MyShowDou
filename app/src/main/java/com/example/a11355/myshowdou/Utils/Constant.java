@@ -6,16 +6,30 @@ package com.example.a11355.myshowdou.Utils;
 public interface Constant {
 
     interface URL {
-//        String BaseUrl = "http://c.m.163.com/";
-        String BaseUrl = "https://app.zhdzxyg.com/Index.asmx/";
-//        String BaseImg = "http://192.168.0.220:8029";
-        String BaseImg = "https://app.zhdzxyg.com";
+        String BaseUrl = "http://c.m.163.com/";
+        String BaseImg = "http://c.m.163.com/";
 
+        public static final String TOP_URL = BaseUrl + "nc/article/headline/";
+        // 头条
+        public static final String TOP_ID = "T1348647909107";
+        // nba
+        public static final String NBA_ID = "T1348649145984";
+        // 汽车
+        public static final String CAR_ID = "T1348654060988";
+        // 笑话
+        public static final String JOKE_ID = "T1350383429665";
+        public static final String END_URL = "/%d-%d.html";
 
     }
 
     interface Strings {
         String[] NewsDetailTitle = {"头条", "NBA", "汽车", "笑话"};
+        String[] NewsDetailTitleUrl={
+                "T1348647909107",//头条
+                "T1348649145984",//nba
+                "T1348654060988",//汽车
+                "T1350383429665"//笑话
+        };
 
         //手机号正则
         String RegexMobile = "^1(3[0-9]|4[5,7]|5[0-9]|7[0-9]|8[0-9])\\d{8}$";
@@ -51,7 +65,7 @@ public interface Constant {
         int NULL = 400;
         //数据异常
         int ABNORMAL = 500;
-        
+
         //短信验证码重试秒数
         int CodeRetryTime = 120;
         //用户编号基底

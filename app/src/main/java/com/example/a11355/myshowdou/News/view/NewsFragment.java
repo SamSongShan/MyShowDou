@@ -4,7 +4,6 @@ package com.example.a11355.myshowdou.News.view;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -22,17 +21,19 @@ import butterknife.BindView;
  * A simple {@link Fragment} subclass.
  */
 public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.tab)
+    TabLayout tab;
+    @BindView(R.id.vp)
+    ViewPager vp;
+    @BindView(R.id.srl)
+    SwipeRefreshLayout srl;
 
     /*
     * 新闻
     *
     * */
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
-    @BindView(R.id.tab)
-    TabLayout tab;
-    @BindView(R.id.vp)
-    ViewPager vp;
+
+
     private List<Fragment> fragments;
 
     @Override
@@ -42,16 +43,15 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void init(View v) {
-        fragments = new ArrayList<>();
-
+        fragments=new ArrayList<>();
         for (int i = 0; i < Constant.Strings.NewsDetailTitle.length; i++) {
-            fragments.add(NewsDetailFragment.instantiate(getActivity(),));
+            fragments.add(NewsDetailFragment.instanceFragment(Constant.Strings.NewsDetailTitleUrl[i]));
         }
         srl.setOnRefreshListener(this);
         vp.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return null;
+                return fragments.get(position);
             }
 
             @Override
@@ -64,12 +64,13 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 return Constant.Strings.NewsDetailTitle[position];
             }
         });
+        tab.setupWithViewPager(vp);
     }
+
 
     @Override
     public void onRefresh() {
 
     }
-
 
 }

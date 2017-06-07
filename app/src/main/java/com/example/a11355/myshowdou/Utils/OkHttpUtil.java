@@ -45,11 +45,11 @@ public class OkHttpUtil {
 
     public static void initOkHttp() {
         okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.MINUTES)
-                .readTimeout(60, TimeUnit.MINUTES)
-                .writeTimeout(60, TimeUnit.MINUTES)
-                .retryOnConnectionFailure(false)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
     }
 
     /**
@@ -58,6 +58,7 @@ public class OkHttpUtil {
     public static void getJSON(String url, OnDataListener dataListener) {
         Request request = new Request.Builder()
                 .url(url)
+                .header("User-Agent0", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:0.9.4)")
                 .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new OkHttpCallback(url, dataListener));
@@ -145,15 +146,16 @@ public class OkHttpUtil {
      * post提交JSON表单
      */
     public static void postJson(String url, OnDataListener dataListener) {
-        final Request request = new Request.Builder()
-                .url(url)
-                .build();
-        okHttpClient.newCall(request).enqueue(new OkHttpCallback(url, dataListener));
+        final Request.Builder request = new Request.Builder()
+                .url(url);
+        Request build = request.build();
+
+        okHttpClient.newCall(build).enqueue(new OkHttpCallback(url, dataListener));
     }
 
     public static void postJson(String url, String inJson, OnDataListener dataListener) {
         FormBody.Builder builder = new FormBody.Builder();
-        builder.add("InJson", inJson);
+        // builder.add("InJson", inJson);
         FormBody formBody = builder.build();
 
         final Request request = new Request.Builder()
@@ -402,11 +404,13 @@ public class OkHttpUtil {
 
     public interface OnDataListener {
         void onResponse(String url, String json);
+
         void onFailure(String url, String error);
     }
 
     public interface OnBytesListener {
         void onResponse(String url, byte[] bytes);
+
         void onFailure(String url, String error);
     }
 
