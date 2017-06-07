@@ -58,7 +58,7 @@ public class OkHttpUtil {
     public static void getJSON(String url, OnDataListener dataListener) {
         Request request = new Request.Builder()
                 .url(url)
-                .header("User-Agent0", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:0.9.4)")
+                .header("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:0.9.4)")
                 .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new OkHttpCallback(url, dataListener));
