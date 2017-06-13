@@ -8,4 +8,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <item name="tag_relation" type="id" />
+    <item name="tag_relation2" type="id" />
+    <item name="tag_url" type="id" />
 </resources>
