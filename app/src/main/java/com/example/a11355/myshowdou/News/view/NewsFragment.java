@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.a11355.myshowdou.Base.BaseFragment;
@@ -20,13 +19,12 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends BaseFragment  {
     @BindView(R.id.tab)
     TabLayout tab;
     @BindView(R.id.vp)
     ViewPager vp;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
+
 
     /*
     * 新闻
@@ -47,7 +45,6 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         for (int i = 0; i < Constant.Strings.NewsDetailTitle.length; i++) {
             fragments.add(NewsDetailFragment.instanceFragment(Constant.Strings.NewsDetailTitleUrl[i]));
         }
-        srl.setOnRefreshListener(this);
         vp.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -68,9 +65,6 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
 
-    @Override
-    public void onRefresh() {
 
-    }
 
 }

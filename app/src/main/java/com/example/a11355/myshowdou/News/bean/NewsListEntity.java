@@ -1,12 +1,16 @@
 package com.example.a11355.myshowdou.News.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 11355 on 2017/6/9.
  */
 
-public class NewsListEntity {
+public class NewsListEntity implements Parcelable {
 
 
     private List<DataBean> data;
@@ -19,7 +23,7 @@ public class NewsListEntity {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * postid : HLQID782050835RB
          * hasCover : false
@@ -408,7 +412,7 @@ public class NewsListEntity {
             this.imgextra = imgextra;
         }
 
-        public static class VideoTopicBean {
+        public static class VideoTopicBean implements Parcelable {
             /**
              * alias : 网易原创微型搞笑短剧
              * tname : 轻松一刻
@@ -462,9 +466,46 @@ public class NewsListEntity {
             public void setTopic_icons(String topic_icons) {
                 this.topic_icons = topic_icons;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.alias);
+                dest.writeString(this.tname);
+                dest.writeString(this.ename);
+                dest.writeString(this.tid);
+                dest.writeString(this.topic_icons);
+            }
+
+            public VideoTopicBean() {
+            }
+
+            protected VideoTopicBean(Parcel in) {
+                this.alias = in.readString();
+                this.tname = in.readString();
+                this.ename = in.readString();
+                this.tid = in.readString();
+                this.topic_icons = in.readString();
+            }
+
+            public static final Creator<VideoTopicBean> CREATOR = new Creator<VideoTopicBean>() {
+                @Override
+                public VideoTopicBean createFromParcel(Parcel source) {
+                    return new VideoTopicBean(source);
+                }
+
+                @Override
+                public VideoTopicBean[] newArray(int size) {
+                    return new VideoTopicBean[size];
+                }
+            };
         }
 
-        public static class AdsBean {
+        public static class AdsBean implements Parcelable {
             /**
              * title : 俄罗斯民众展示巨型国旗庆"俄罗斯日"
              * skipID : 00AO0001|2260414
@@ -538,9 +579,50 @@ public class NewsListEntity {
             public void setUrl(String url) {
                 this.url = url;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.title);
+                dest.writeString(this.skipID);
+                dest.writeString(this.tag);
+                dest.writeString(this.imgsrc);
+                dest.writeString(this.subtitle);
+                dest.writeString(this.skipType);
+                dest.writeString(this.url);
+            }
+
+            public AdsBean() {
+            }
+
+            protected AdsBean(Parcel in) {
+                this.title = in.readString();
+                this.skipID = in.readString();
+                this.tag = in.readString();
+                this.imgsrc = in.readString();
+                this.subtitle = in.readString();
+                this.skipType = in.readString();
+                this.url = in.readString();
+            }
+
+            public static final Creator<AdsBean> CREATOR = new Creator<AdsBean>() {
+                @Override
+                public AdsBean createFromParcel(Parcel source) {
+                    return new AdsBean(source);
+                }
+
+                @Override
+                public AdsBean[] newArray(int size) {
+                    return new AdsBean[size];
+                }
+            };
         }
 
-        public static class ImgextraBean {
+        public static class ImgextraBean implements Parcelable {
             /**
              * imgsrc : http://cms-bucket.nosdn.127.net/f05bae46e3494f5481fc9e0d982f1c3e20170612144438.png
              */
@@ -554,6 +636,167 @@ public class NewsListEntity {
             public void setImgsrc(String imgsrc) {
                 this.imgsrc = imgsrc;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.imgsrc);
+            }
+
+            public ImgextraBean() {
+            }
+
+            protected ImgextraBean(Parcel in) {
+                this.imgsrc = in.readString();
+            }
+
+            public static final Creator<ImgextraBean> CREATOR = new Creator<ImgextraBean>() {
+                @Override
+                public ImgextraBean createFromParcel(Parcel source) {
+                    return new ImgextraBean(source);
+                }
+
+                @Override
+                public ImgextraBean[] newArray(int size) {
+                    return new ImgextraBean[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.postid);
+            dest.writeByte(this.hasCover ? (byte) 1 : (byte) 0);
+            dest.writeInt(this.hasHead);
+            dest.writeInt(this.replyCount);
+            dest.writeString(this.videosource);
+            dest.writeInt(this.hasImg);
+            dest.writeString(this.digest);
+            dest.writeByte(this.hasIcon ? (byte) 1 : (byte) 0);
+            dest.writeString(this.docid);
+            dest.writeString(this.title);
+            dest.writeString(this.TAGS);
+            dest.writeParcelable(this.videoTopic, flags);
+            dest.writeInt(this.order);
+            dest.writeInt(this.priority);
+            dest.writeString(this.lmodify);
+            dest.writeString(this.boardid);
+            dest.writeInt(this.length);
+            dest.writeString(this.topic_background);
+            dest.writeString(this.template);
+            dest.writeInt(this.votecount);
+            dest.writeString(this.skipID);
+            dest.writeString(this.alias);
+            dest.writeString(this.skipType);
+            dest.writeString(this.cid);
+            dest.writeInt(this.hasAD);
+            dest.writeString(this.source);
+            dest.writeString(this.videoID);
+            dest.writeString(this.ename);
+            dest.writeString(this.tname);
+            dest.writeString(this.imgsrc);
+            dest.writeString(this.ptime);
+            dest.writeString(this.url_3w);
+            dest.writeString(this.ltitle);
+            dest.writeString(this.url);
+            dest.writeString(this.subtitle);
+            dest.writeList(this.ads);
+            dest.writeList(this.imgextra);
+            dest.writeInt(this.type);
+        }
+
+        protected DataBean(Parcel in) {
+            this.postid = in.readString();
+            this.hasCover = in.readByte() != 0;
+            this.hasHead = in.readInt();
+            this.replyCount = in.readInt();
+            this.videosource = in.readString();
+            this.hasImg = in.readInt();
+            this.digest = in.readString();
+            this.hasIcon = in.readByte() != 0;
+            this.docid = in.readString();
+            this.title = in.readString();
+            this.TAGS = in.readString();
+            this.videoTopic = in.readParcelable(VideoTopicBean.class.getClassLoader());
+            this.order = in.readInt();
+            this.priority = in.readInt();
+            this.lmodify = in.readString();
+            this.boardid = in.readString();
+            this.length = in.readInt();
+            this.topic_background = in.readString();
+            this.template = in.readString();
+            this.votecount = in.readInt();
+            this.skipID = in.readString();
+            this.alias = in.readString();
+            this.skipType = in.readString();
+            this.cid = in.readString();
+            this.hasAD = in.readInt();
+            this.source = in.readString();
+            this.videoID = in.readString();
+            this.ename = in.readString();
+            this.tname = in.readString();
+            this.imgsrc = in.readString();
+            this.ptime = in.readString();
+            this.url_3w = in.readString();
+            this.ltitle = in.readString();
+            this.url = in.readString();
+            this.subtitle = in.readString();
+            this.ads = new ArrayList<AdsBean>();
+            in.readList(this.ads, AdsBean.class.getClassLoader());
+            this.imgextra = new ArrayList<ImgextraBean>();
+            in.readList(this.imgextra, ImgextraBean.class.getClassLoader());
+            this.type = in.readInt();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.data);
+    }
+
+    public NewsListEntity() {
+    }
+
+    protected NewsListEntity(Parcel in) {
+        this.data = new ArrayList<DataBean>();
+        in.readList(this.data, DataBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<NewsListEntity> CREATOR = new Parcelable.Creator<NewsListEntity>() {
+        @Override
+        public NewsListEntity createFromParcel(Parcel source) {
+            return new NewsListEntity(source);
+        }
+
+        @Override
+        public NewsListEntity[] newArray(int size) {
+            return new NewsListEntity[size];
+        }
+    };
 }
