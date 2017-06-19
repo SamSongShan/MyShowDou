@@ -20,6 +20,11 @@ public interface Constant {
         public static final String JOKE_ID = "T1350383429665";
         public static final String END_URL = "/%d-%d.html";
 
+       // http://c.m.163.com/nc/article/CN2D57LK000181BT/full.html//详情页
+
+        public static final String NEW_DETAIL = BaseUrl + "nc/article/%s/full.html";
+
+
     }
 
     interface Strings {

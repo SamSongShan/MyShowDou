@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import dmax.dialog.SpotsDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +45,7 @@ public class NewsDetailFragment extends BaseFragment implements OkHttpUtil.OnDat
     private Gson gson = new GsonBuilder().create();
 
     private List<NewsListEntity.DataBean> dataBeen = new ArrayList<>();
+    private SpotsDialog loadingDialog;
 
 
     @Override
@@ -74,6 +76,8 @@ public class NewsDetailFragment extends BaseFragment implements OkHttpUtil.OnDat
 
     @Override
     protected void loadData() {
+        loadingDialog = new SpotsDialog(getActivity(), "加载中...", R.style.Loading);
+        loadingDialog.show();
         if (srl != null && srl.isRefreshing()) {
             srl.setRefreshing(false);
         }
@@ -83,6 +87,7 @@ public class NewsDetailFragment extends BaseFragment implements OkHttpUtil.OnDat
 
     @Override
     public void onResponse(String url, String json) {
+        dismissLoading();
         removeLoadItem();
         if (!TextUtils.isEmpty(json)) {
             Log.e("loge", "onResponse: " + json);
@@ -146,5 +151,14 @@ public class NewsDetailFragment extends BaseFragment implements OkHttpUtil.OnDat
         startPage = 0;
         endPage = 10;
         loadData();
+    }
+
+    private void dismissLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+        if (srl != null && srl.isRefreshing()) {
+            srl.setRefreshing(false);
+        }
     }
 }

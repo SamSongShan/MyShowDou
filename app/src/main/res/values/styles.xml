@@ -73,4 +73,14 @@
         <item name="android:progressDrawable">@drawable/shape_progressbar_blue</item>
     </style>
 
+    <!-- 加载等待对话框样式 SpotsDialog使用 -->
+    <style name="Loading" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="DialogTitleText">加载中...</item>
+        <item name="DialogSpotColor">@color/colorAccent</item>
+        <item name="DialogSpotCount">6</item>
+        <item name="android:windowBackground">@drawable/shape_solid_trans</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>

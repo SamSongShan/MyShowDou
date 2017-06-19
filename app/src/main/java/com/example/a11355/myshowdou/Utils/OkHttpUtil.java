@@ -64,6 +64,7 @@ public class OkHttpUtil {
         call.enqueue(new OkHttpCallback(url, dataListener));
     }
 
+
     /**
      * 同步get请求 -- 让子类调用
      */

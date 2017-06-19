@@ -39,13 +39,12 @@ public abstract class BaseActivity <V,T extends BasePresenter<V>> extends AppCom
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
-        presenter.dettach();
 
     }
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.attach((V)this);
+
     }
     // 实例化presenter
     public abstract T initPresenter();
