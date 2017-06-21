@@ -76,11 +76,11 @@ public class NewsDetailFragment extends BaseFragment implements OkHttpUtil.OnDat
 
     @Override
     protected void loadData() {
-        loadingDialog = new SpotsDialog(getActivity(), "加载中...", R.style.Loading);
-        loadingDialog.show();
-        if (srl != null && srl.isRefreshing()) {
-            srl.setRefreshing(false);
+        if (startPage==0){
+            loadingDialog = new SpotsDialog(getActivity(), "加载中...", R.style.Loading);
+            loadingDialog.show();
         }
+
 
         OkHttpUtil.getJSON(String.format(Constant.URL.TOP_URL + url + Constant.URL.END_URL, startPage, endPage), this);
     }
