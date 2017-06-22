@@ -60,4 +60,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.android.support:design:26.0.0-alpha1'
+    compile 'com.bm.photoview:library:1.4.1'
 }
