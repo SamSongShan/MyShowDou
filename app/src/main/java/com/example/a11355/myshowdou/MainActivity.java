@@ -3,10 +3,12 @@ package com.example.a11355.myshowdou;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -83,6 +85,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
         return R.layout.activity_main;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void init() {
         Bmob.initialize(this, "a86f4153e71e9561f941ea31ad91384f");//初始化bomb
@@ -90,7 +93,10 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setElevation(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(0);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

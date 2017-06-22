@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.a11355.myshowdou.MainActivity">
-
+    <!--        app:elevation="0dp"-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
+
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
+
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -32,6 +35,7 @@
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <include
+
         android:id="@+id/include"
         layout="@layout/content_main" />
 
