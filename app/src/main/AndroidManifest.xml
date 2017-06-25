@@ -31,7 +31,8 @@
         <activity
             android:name=".News.view.NewsTVDetailActivity"
             android:label="@string/title_activity_news_tvdetail"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".News.view.NewsPhotoActivity"></activity>
     </application>
 
 </manifest>

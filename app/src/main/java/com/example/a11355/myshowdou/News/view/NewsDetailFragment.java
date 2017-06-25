@@ -141,9 +141,17 @@ public class NewsDetailFragment extends BaseFragment implements OkHttpUtil.OnDat
 
     @Override
     public void onItemClick(View v, int position) {
-        Intent intent = new Intent(getActivity(), NewsTVDetailActivity.class);
-        intent.putExtra("data",dataBeen.get(position));
-        startActivity(intent);
+
+        if (dataBeen.get(position).getImgextra()==null){
+            Intent intent = new Intent(getActivity(), NewsTVDetailActivity.class);
+            intent.putExtra("data",dataBeen.get(position));
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(getActivity(), NewsPhotoActivity.class);
+            intent.putExtra("data",dataBeen.get(position));
+            startActivity(intent);
+        }
+
     }
 
     @Override

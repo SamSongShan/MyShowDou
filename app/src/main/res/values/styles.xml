@@ -20,12 +20,12 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     //可伸缩toolbar样式
-<style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-    <item name="android:textColorPrimary">@color/colorBlack</item>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/colorBlack</item>
 
 
-
-</style>
+    </style>
 
     <!-- 全屏主题 Logo页使用 -->
     <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
