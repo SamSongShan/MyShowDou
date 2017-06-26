@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +38,7 @@ public class NewsPhotoActivity extends BaseActivity {
     @BindView(R.id.vp)
     ViewPager vp;
     List<PhotoView> photos = new ArrayList<>();
+    private Toolbar toolbar;
 
     @Override
     protected int getViewResId() {
@@ -49,6 +53,13 @@ public class NewsPhotoActivity extends BaseActivity {
     @Override
     protected void init() {
         final NewsListEntity.DataBean data = getIntent().getParcelableExtra("data");
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setTitle(data.getTitle());
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         vp.setAdapter(new PagerAdapter() {
             @Override
@@ -106,6 +117,14 @@ public class NewsPhotoActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
