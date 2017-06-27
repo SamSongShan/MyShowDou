@@ -27,16 +27,8 @@ public interface Constant {
         //http://c.m.163.com/nc/video/list/V9LG4B3A0/n/0-10.html 视频
 
         //视频
-        public static final String Videos=BaseUrl+"nc/video/list/%s/n/0-10.html";
+        public static final String Videos=BaseUrl+"nc/video/list/%s/n/%d-10.html";
 
-        // 热点视频
-        public static final String VIDEO_HOT_ID = "V9LG4B3A0";
-        // 娱乐视频
-        public static final String VIDEO_ENTERTAINMENT_ID = "V9LG4CHOR";
-        // 搞笑视频
-        public static final String VIDEO_FUN_ID = "V9LG4E6VR";
-        // 精品视频
-        public static final String VIDEO_CHOICE_ID = "00850FRB";
     }
 
     interface Strings {
@@ -46,6 +38,12 @@ public interface Constant {
                 "T1348649145984",//nba
                 "T1348654060988",//汽车
                 "T1350383429665"//笑话
+        };
+        String[] VideoDetailTitleUrl={
+                "V9LG4B3A0",//热点视频
+                "V9LG4CHOR",//娱乐视频
+                "V9LG4E6VR",//搞笑视频
+                "00850FRB"//精品视频
         };
 
         //手机号正则
