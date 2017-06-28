@@ -89,7 +89,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
     @Override
     protected void init() {
         Bmob.initialize(this, "a86f4153e71e9561f941ea31ad91384f");//初始化bomb
-        String versionNum = getVersionNum();
+         versionNum = getVersionNum();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

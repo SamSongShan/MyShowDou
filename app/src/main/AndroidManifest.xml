@@ -32,7 +32,11 @@
             android:name=".News.view.NewsTVDetailActivity"
             android:label="@string/title_activity_news_tvdetail"
             android:theme="@style/AppTheme" />
-        <activity android:name=".News.view.NewsPhotoActivity"></activity>
+        <activity android:name=".News.view.NewsPhotoActivity" />
+        <activity
+            android:name=".Videos.VideoDetialActivity"
+            android:label="@string/title_activity_video_detial"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

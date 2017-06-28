@@ -1,12 +1,15 @@
 package com.example.a11355.myshowdou.Videos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by 11355 on 2017/6/27.
  */
 
-public class VideoListEntity {
+public class VideoListEntity{
 
 
     private List<DataBean> data;
@@ -19,7 +22,7 @@ public class VideoListEntity {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * sizeSHD : 18600
          * replyCount : 0
@@ -298,7 +301,7 @@ public class VideoListEntity {
             this.ptime = ptime;
         }
 
-        public static class VideoTopicBean {
+        public static class VideoTopicBean implements Parcelable {
             /**
              * alias : 精彩视频，个人见解
              * tname : 视觉苍南
@@ -352,6 +355,121 @@ public class VideoListEntity {
             public void setTopic_icons(String topic_icons) {
                 this.topic_icons = topic_icons;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.alias);
+                dest.writeString(this.tname);
+                dest.writeString(this.ename);
+                dest.writeString(this.tid);
+                dest.writeString(this.topic_icons);
+            }
+
+            public VideoTopicBean() {
+            }
+
+            protected VideoTopicBean(Parcel in) {
+                this.alias = in.readString();
+                this.tname = in.readString();
+                this.ename = in.readString();
+                this.tid = in.readString();
+                this.topic_icons = in.readString();
+            }
+
+            public static final Creator<VideoTopicBean> CREATOR = new Creator<VideoTopicBean>() {
+                @Override
+                public VideoTopicBean createFromParcel(Parcel source) {
+                    return new VideoTopicBean(source);
+                }
+
+                @Override
+                public VideoTopicBean[] newArray(int size) {
+                    return new VideoTopicBean[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.sizeSHD);
+            dest.writeInt(this.replyCount);
+            dest.writeString(this.videosource);
+            dest.writeString(this.mp4Hd_url);
+            dest.writeString(this.title);
+            dest.writeString(this.cover);
+            dest.writeParcelable(this.videoTopic, flags);
+            dest.writeString(this.description);
+            dest.writeString(this.replyid);
+            dest.writeInt(this.length);
+            dest.writeString(this.m3u8_url);
+            dest.writeString(this.vid);
+            dest.writeString(this.topicName);
+            dest.writeInt(this.votecount);
+            dest.writeString(this.topicImg);
+            dest.writeString(this.topicDesc);
+            dest.writeString(this.topicSid);
+            dest.writeString(this.replyBoard);
+            dest.writeInt(this.playCount);
+            dest.writeString(this.sectiontitle);
+            dest.writeString(this.mp4_url);
+            dest.writeInt(this.playersize);
+            dest.writeInt(this.sizeSD);
+            dest.writeInt(this.sizeHD);
+            dest.writeString(this.m3u8Hd_url);
+            dest.writeString(this.ptime);
+            dest.writeInt(this.type);
+        }
+
+        protected DataBean(Parcel in) {
+            this.sizeSHD = in.readInt();
+            this.replyCount = in.readInt();
+            this.videosource = in.readString();
+            this.mp4Hd_url = in.readString();
+            this.title = in.readString();
+            this.cover = in.readString();
+            this.videoTopic = in.readParcelable(VideoTopicBean.class.getClassLoader());
+            this.description = in.readString();
+            this.replyid = in.readString();
+            this.length = in.readInt();
+            this.m3u8_url = in.readString();
+            this.vid = in.readString();
+            this.topicName = in.readString();
+            this.votecount = in.readInt();
+            this.topicImg = in.readString();
+            this.topicDesc = in.readString();
+            this.topicSid = in.readString();
+            this.replyBoard = in.readString();
+            this.playCount = in.readInt();
+            this.sectiontitle = in.readString();
+            this.mp4_url = in.readString();
+            this.playersize = in.readInt();
+            this.sizeSD = in.readInt();
+            this.sizeHD = in.readInt();
+            this.m3u8Hd_url = in.readString();
+            this.ptime = in.readString();
+            this.type = in.readInt();
+        }
+
+        public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
     }
 }

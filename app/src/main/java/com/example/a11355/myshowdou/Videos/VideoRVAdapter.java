@@ -16,7 +16,7 @@ public class VideoRVAdapter extends AbsRecyclerAdapter<VideoListEntity.DataBean>
     private OnAdapterCallbackListener onAdapterCallbackListener;
 
     public VideoRVAdapter(Context context, OnAdapterCallbackListener onAdapterCallbackListener) {
-        super(context, R.layout.item_rv_newsfragement,R.layout.item_next_page_loading,
+        super(context, R.layout.item_rv_videofragement, R.layout.item_next_page_loading,
                 R.layout.item_page_bottom);
         this.context = context;
         this.onAdapterCallbackListener = onAdapterCallbackListener;
@@ -30,9 +30,12 @@ public class VideoRVAdapter extends AbsRecyclerAdapter<VideoListEntity.DataBean>
     @Override
     public void onBindHolder(AbsRecyclerAdapter.RecyclerHolder holder, VideoListEntity.DataBean d, int position) {
 
-        switch (d.getType()){
+        switch (d.getType()) {
             case 0:
-
+                holder.bindSimpleDraweeView(R.id.sdv, d.getCover())
+                        .bindTextView(R.id.tv_title, d.getTitle())
+                        .bindSimpleDraweeView(R.id.sdv_from, d.getTopicImg())
+                        .bindTextView(R.id.tv_from, d.getTopicName());
                 break;
             case 1:
                 onAdapterCallbackListener.onCallback();
