@@ -9,4 +9,29 @@
     tools:context="com.example.a11355.myshowdou.Videos.VideoDetialActivity"
     tools:showIn="@layout/activity_video_detial">
 
+
+
+            <com.example.a11355.myshowdou.Videos.videomodel.VideoPlayer
+                android:layout_marginTop="2dp"
+                android:id="@+id/Player"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:background="#363636">
+
+            </com.example.a11355.myshowdou.Videos.videomodel.VideoPlayer>
+
+            <TextView
+                android:textColor="@color/colorBlack"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="更多》》》" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
 </LinearLayout>

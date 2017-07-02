@@ -36,7 +36,9 @@
         <activity
             android:name=".Videos.VideoDetialActivity"
             android:label="@string/title_activity_video_detial"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

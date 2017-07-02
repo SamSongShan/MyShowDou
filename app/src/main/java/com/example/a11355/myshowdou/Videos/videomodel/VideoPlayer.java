@@ -73,7 +73,7 @@ public class VideoPlayer extends FrameLayout implements View.OnClickListener,
 
     // SurfaceView的创建比较耗时，要注意
     private SurfaceHolder surfaceHolder;
-    private MediaPlayer mediaPlayer;
+    public MediaPlayer mediaPlayer;
     private boolean isFullscreen;//是否全屏
     private boolean isPrepare;
     private boolean isLockScreen;
