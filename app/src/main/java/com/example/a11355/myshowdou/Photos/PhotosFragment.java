@@ -3,26 +3,28 @@ package com.example.a11355.myshowdou.Photos;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.example.a11355.myshowdou.Base.BaseFragment;
 import com.example.a11355.myshowdou.R;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PhotosFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-/*
-* 图片
-*
-* */
+    /*
+    * 图片
+    *
+    * */
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
-    Unbinder unbinder;
+    @BindView(R.id.rv_photo)
+    RecyclerView rvPhoto;
 
     @Override
     protected int getViewResId() {
@@ -31,7 +33,8 @@ public class PhotosFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     protected void init(View v) {
-
+        rvPhoto.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        rvPhoto.setAdapter();
         srl.setOnRefreshListener(this);
     }
 
@@ -39,4 +42,6 @@ public class PhotosFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void onRefresh() {
 
     }
+
+
 }

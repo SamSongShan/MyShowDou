@@ -29,6 +29,8 @@ public interface Constant {
         //视频
         public static final String Videos=BaseUrl+"nc/video/list/%s/n/%d-10.html";
 
+        //http://gank.io/api/search/query/listview/category/%E7%A6%8F%E5%88%A9/count/10/page/7  图片
+
     }
 
     interface Strings {

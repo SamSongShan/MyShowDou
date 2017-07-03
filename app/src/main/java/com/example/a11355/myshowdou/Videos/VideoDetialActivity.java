@@ -22,7 +22,6 @@ import com.example.a11355.myshowdou.Utils.Constant;
 import com.example.a11355.myshowdou.Utils.OkHttpUtil;
 import com.example.a11355.myshowdou.Utils.ToastUtil;
 import com.example.a11355.myshowdou.Videos.videomodel.VideoPlayer;
-import com.example.a11355.myshowdou.Videos.videomodel.utils.PlayerUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,7 +32,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 
-public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDataListener, OnAdapterCallbackListener, AbsRecyclerAdapter.OnItemClickListener {
+public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDataListener, OnAdapterCallbackListener, AbsRecyclerAdapter.OnItemClickListener, MediaPlayer.OnCompletionListener {
 
 
     @BindView(R.id.Player)
@@ -49,6 +48,8 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
     private Toolbar toolbar;
     private int position;//当前播放ID
     private MediaPlayer mediaPlayer;
+    private Timer mTimer;
+    private long count=10L;
 
     @Override
     protected int getViewResId() {
@@ -177,7 +178,10 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
 
     @Override
     public void onItemClick(View v, int position) {
+
          this.position = position;
+        toolbar.setTitle(dataBeen.get(position).getTitle());
+
         Player.playVideo(dataBeen.get(position).getMp4_url(), dataBeen.get(position).getTitle());
 
     }
@@ -205,7 +209,7 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
     }
 
     public void setTimer(){
-        Timer mTimer = new Timer();
+        mTimer = new Timer();
 
         TimerTask mTimerTask = new TimerTask() {
 
@@ -217,14 +221,8 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
                 }
 
                 if (mediaPlayer!=null){
-                   final int currentPosition = mediaPlayer.getCurrentPosition();
-
-                    VideoDetialActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtil.initToast(VideoDetialActivity.this, PlayerUtil.long2Str(currentPosition));
-                        }
-                    });
+                    mediaPlayer.setOnCompletionListener(VideoDetialActivity.this);
+                    stopTimer();
                }
 
 
@@ -242,6 +240,34 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
 
 //每隔10毫秒检测一下播放进度
 
-        mTimer.schedule(mTimerTask, 0, 10);
+        mTimer.schedule(mTimerTask, 0, count);
+    }
+
+    private void stopTimer(){
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+
+        count = 0L;
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        if (position<dataBeen.size()-1){
+            ToastUtil.initToast(this,"即将播出下一集");
+
+                this.position=this.position+1;
+
+
+            toolbar.setTitle(dataBeen.get(position).getTitle());
+
+            Player.playVideo(dataBeen.get(position).getMp4_url(), dataBeen.get(position).getTitle());
+        }else {
+            ToastUtil.initToast(this,"请加载更多");
+
+        }
+
+
     }
 }
