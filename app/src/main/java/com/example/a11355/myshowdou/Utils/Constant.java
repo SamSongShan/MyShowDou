@@ -20,28 +20,31 @@ public interface Constant {
         public static final String JOKE_ID = "T1350383429665";
         public static final String END_URL = "/%d-%d.html";
 
-       // http://c.m.163.com/nc/article/CN2D57LK000181BT/full.html//详情页
+        // http://c.m.163.com/nc/article/CN2D57LK000181BT/full.html//详情页
 
         public static final String NEW_DETAIL = BaseUrl + "nc/article/%s/full.html";
 
         //http://c.m.163.com/nc/video/list/V9LG4B3A0/n/0-10.html 视频
 
         //视频
-        public static final String Videos=BaseUrl+"nc/video/list/%s/n/%d-10.html";
+        public static final String Videos = BaseUrl + "nc/video/list/%s/n/%d-10.html";
 
         //http://gank.io/api/search/query/listview/category/%E7%A6%8F%E5%88%A9/count/10/page/7  图片
+       //图片
+        public static final String Photo = "http://gank.io/api/search/query/listview/category/福利/count/10/page/%d";
+
 
     }
 
     interface Strings {
         String[] NewsDetailTitle = {"头条", "NBA", "汽车", "笑话"};
-        String[] NewsDetailTitleUrl={
+        String[] NewsDetailTitleUrl = {
                 "T1348647909107",//头条
                 "T1348649145984",//nba
                 "T1348654060988",//汽车
                 "T1350383429665"//笑话
         };
-        String[] VideoDetailTitleUrl={
+        String[] VideoDetailTitleUrl = {
                 "V9LG4B3A0",//热点视频
                 "V9LG4CHOR",//娱乐视频
                 "V9LG4E6VR",//搞笑视频

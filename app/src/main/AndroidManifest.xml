@@ -35,10 +35,14 @@
         <activity android:name=".News.view.NewsPhotoActivity" />
         <activity
             android:name=".Videos.VideoDetialActivity"
-            android:label="@string/title_activity_video_detial"
-            android:theme="@style/AppTheme"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden"
-            android:screenOrientation="portrait"></activity>
+            android:label="@string/title_activity_video_detial"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Photos.PhotoDetialActivity"
+            android:label="@string/title_activity_photo_detial"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -105,4 +105,5 @@
     </string>
     <string name="title_activity_news_photo">NewsPhotoActivity</string>
     <string name="title_activity_video_detial">VideoDetialActivity</string>
+    <string name="title_activity_photo_detial">PhotoDetialActivity</string>
 </resources>
