@@ -32,6 +32,9 @@ public interface Constant {
         //http://gank.io/api/search/query/listview/category/%E7%A6%8F%E5%88%A9/count/10/page/7  图片
        //图片
         public static final String Photo = "http://gank.io/api/search/query/listview/category/福利/count/10/page/%d";
+       // http://gank.io/api/data/Android/10/1
+        //技术
+       public static final String Knowleges = "http://gank.io/api/data/Android/10/%d";
 
 
     }
