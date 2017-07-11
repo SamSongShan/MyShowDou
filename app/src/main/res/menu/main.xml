@@ -2,8 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/type"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="热点视频"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/yl"
+                android:orderInCategory="100"
+                android:title="娱乐视频"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/gx"
+                android:orderInCategory="100"
+                android:title="搞笑视频"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/jp"
+                android:orderInCategory="100"
+                android:title="精品视频"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/rd"
+                android:orderInCategory="100"
+                android:title="热点视频"
+                app:showAsAction="always" />
+            />
+        </menu>
+
+
+    </item>
+
+
 </menu>

@@ -2,6 +2,8 @@ package com.example.a11355.myshowdou;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -32,8 +34,10 @@ import com.example.a11355.myshowdou.Base.BaseDialog;
 import com.example.a11355.myshowdou.Knowledges.KnowledgesFragment;
 import com.example.a11355.myshowdou.News.view.NewsFragment;
 import com.example.a11355.myshowdou.Photos.PhotosFragment;
+import com.example.a11355.myshowdou.Utils.BitMapUtil;
 import com.example.a11355.myshowdou.Utils.Constant;
 import com.example.a11355.myshowdou.Utils.OkHttpUtil;
+import com.example.a11355.myshowdou.Utils.PreferencesUtil;
 import com.example.a11355.myshowdou.Utils.ToastUtil;
 import com.example.a11355.myshowdou.Utils.Util;
 import com.example.a11355.myshowdou.Videos.VideosFragment;
@@ -56,8 +60,8 @@ import static android.R.attr.versionName;
 * 主Activity
 *
 * */
-public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
-        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener ,MainView{
+public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
+        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener, MainView {
 
     @BindView(R.id.rg)
     RadioGroup rg;
@@ -78,6 +82,8 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
     private NewVersionDialog newVersionDialog;
     private String filePath;
     private DownloadDialog downloadDialog;
+    private Menu menu;
+    private MenuItem item;
 
 
     @Override
@@ -89,7 +95,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
     @Override
     protected void init() {
         Bmob.initialize(this, "a86f4153e71e9561f941ea31ad91384f");//初始化bomb
-         versionNum = getVersionNum();
+        versionNum = getVersionNum();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,6 +129,12 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
         return new MainPresenterImpl();
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        item = menu.findItem(R.id.type);
+        item.setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     private void update(String versionNum) {
         isForce = false;
@@ -184,7 +196,45 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.rd) {//热点视频
+            if (this.item != null) {
+                if (videosFragment!=null){
+                    this.item.setTitle("热点视频");
+                    videosFragment.setUrlPosion(0);
+                    videosFragment.onRefresh();
+                }
+            }
+            return true;
+        }
+        if (id == R.id.yl) {//娱乐视频
+            if (this.item != null) {
+                if (videosFragment!=null){
+                    this.item.setTitle("娱乐视频");
+                    videosFragment.setUrlPosion(1);
+                    videosFragment.onRefresh();
+                }
+            }
+            return true;
+        }
+        if (id == R.id.gx) {//搞笑视频
+            if (this.item != null) {
+                if (videosFragment!=null){
+                    this.item.setTitle("搞笑视频");
+                    videosFragment.setUrlPosion(2);
+                    videosFragment.onRefresh();
+                }
+            }
+            return true;
+        }
+        if (id == R.id.jp) {//精品视频
+            if (this.item != null) {
+                if (videosFragment!=null){
+                    this.item.setTitle("精品视频");
+                    videosFragment.setUrlPosion(3);
+                    videosFragment.onRefresh();
+
+                }
+            }
             return true;
         }
 
@@ -206,7 +256,13 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            String filePath = Environment.getExternalStorageDirectory() + "/Android/data/" +
+                    getPackageName() + "/cache/logo.jpg";
+            if (!new File(filePath).exists()) {
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                BitMapUtil.saveBitmap2File(bitmap, filePath);
+            }
+            PreferencesUtil.showShare(this, "趣逗最新下载地址", "http://bmob-cdn-11489.b0.upaiyun.com/2017/05/14/78bb756f401c73d680c6b941165af335.apk", "欢迎大家下载", filePath, this);
         } else if (id == R.id.nav_send) {
 
         }
@@ -217,10 +273,12 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
     }
 
 
-
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        if (item != null) {
+            item.setVisible(false);
 
+        }
         if (fragmentManager == null) {
             fragmentManager = getSupportFragmentManager();
         }
@@ -239,7 +297,10 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
                 break;
             case R.id.rb_video://视频
                 page = 1;
+                if (item != null) {
+                    item.setVisible(true);
 
+                }
                 if (videosFragment == null) {
                     videosFragment = new VideosFragment();
                     transaction.add(R.id.fl, videosFragment, "1");
@@ -321,7 +382,6 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
     }
 
 
-
     @Override
     public void onItemClick(View v) {
         if (newVersionDialog != null) {
@@ -330,7 +390,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
         }
 
         downloadDialog = DownloadDialog.newInstance(Util.getAppName(this) + versionNum, isForce);
-        downloadDialog.show(getFragmentManager(),"download");
+        downloadDialog.show(getFragmentManager(), "download");
         filePath = Environment.getExternalStorageDirectory() + "/Download/" + Util.getAppName(this) +
                 "_" + versionName + ".apk";
         Log.e("loge", "Download: " + filePath);
@@ -396,7 +456,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Constant.Code.PermissionCode);
-        }else {
+        } else {
             update(versionNum);
         }
     }
@@ -406,7 +466,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenterImpl>
         if (requestCode == Constant.Code.PermissionCode) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 ToastUtil.initToast(this, "存储权限被拒绝，使用过程中可能会出现未知错误");
-            }else {
+            } else {
                 update(versionNum);
 
             }

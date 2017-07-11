@@ -3,12 +3,16 @@ package com.example.a11355.myshowdou.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
 
+import com.example.a11355.myshowdou.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 
 /**
@@ -19,7 +23,7 @@ public class PreferencesUtil {
     /**
      * 保存用户信息到本地
      */
-    public static void saveUserInfo(Context context, String data){
+    public static void saveUserInfo(Context context, String data) {
         SharedPreferences userInfo = context.getSharedPreferences("userInfo", context.MODE_PRIVATE);
         SharedPreferences.Editor editor = userInfo.edit();
         editor.putString("UserInfo", data);
@@ -29,7 +33,7 @@ public class PreferencesUtil {
     /**
      * 保存用户信息到本地
      */
-    public static void saveData(Context context, String preferName, String dataName, String data){
+    public static void saveData(Context context, String preferName, String dataName, String data) {
         SharedPreferences dataInfo = context.getSharedPreferences(preferName, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = dataInfo.edit();
         editor.putString(dataName, data);
@@ -39,7 +43,7 @@ public class PreferencesUtil {
     /**
      * 保存支付信息到本地
      */
-    public static void saveWeChatPay(Context context, String name, String type, float money){
+    public static void saveWeChatPay(Context context, String name, String type, float money) {
         SharedPreferences payInfo = context.getSharedPreferences(name, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = payInfo.edit();
         editor.putString("PayType", type);
@@ -51,7 +55,7 @@ public class PreferencesUtil {
      * 修改用户数据
      */
     public static void submitUserInfo(Context context, String name, String data,
-                                      OkHttpUtil.OnDataListener dataListener){
+                                      OkHttpUtil.OnDataListener dataListener) {
         Gson gson = new GsonBuilder().create();
 //        String jsonString = gson.toJson(new UpdateUserInfo(getUserId(context), name, data));
 //        OkHttpUtil.postJson(Constant.URL.UpdateUserEntity, DesUtil.encrypt(jsonString), dataListener);
@@ -76,7 +80,7 @@ public class PreferencesUtil {
     /**
      * 从本地获取UserId
      */
-    public static String getUserId(Context context){
+    public static String getUserId(Context context) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SharedPreferences user = context.getSharedPreferences("user", context.MODE_PRIVATE);
         try {
@@ -114,4 +118,60 @@ public class PreferencesUtil {
         }
         return null;
     }*/
+    public static void showShare(Context context, String title, String url, String text, String imgPath,
+                                 View.OnClickListener listener) {
+        OnekeyShare oks = new OnekeyShare();
+        //追加复制按钮
+     /*Bitmap copy = BitmapFactory.decodeResource(context.getResources(), R.mipmap.copy_link);
+       oks.setCustomerLogo(copy, "复制链接", listener);*/
+
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
+        oks.setTitle(title);
+        // titleUrl是标题的网络链接，QQ和QQ空间等使用
+        oks.setTitleUrl(url);
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText(text);
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        oks.setImagePath(imgPath);//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setImageUrl(url);
+        oks.setInstallUrl(url);
+        oks.setUrl(url);
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("大家快来下载！");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite(context.getString(R.string.app_name));
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl(url);
+        oks.setFilePath(url);
+        // 启动分享GUI
+        oks.show(context);
+
+        /*OnekeyShare oks = new OnekeyShare();
+//关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
+        oks.setTitle(title);
+// titleUrl是标题的网络链接，QQ和QQ空间等使用
+        oks.setTitleUrl(url);
+// text是分享文本，所有平台都需要这个字段
+        oks.setText(text);
+// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+oks.setImagePath(imgPath);//确保SDcard下面存在此张图片
+// url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl(url);
+// comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment(text);
+// site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite(context.getString(R.string.app_name));
+// siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl(url);
+
+// 启动分享GUI
+        oks.show(context);*/
+    }
 }

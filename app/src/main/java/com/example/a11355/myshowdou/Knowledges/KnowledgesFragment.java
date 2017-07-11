@@ -12,9 +12,9 @@ import android.view.View;
 import com.example.a11355.myshowdou.Base.AbsRecyclerAdapter;
 import com.example.a11355.myshowdou.Base.BaseFragment;
 import com.example.a11355.myshowdou.Base.OnAdapterCallbackListener;
-import com.example.a11355.myshowdou.Photos.PhotoDetialActivity;
 import com.example.a11355.myshowdou.R;
 import com.example.a11355.myshowdou.Utils.Constant;
+import com.example.a11355.myshowdou.Utils.H5Activity;
 import com.example.a11355.myshowdou.Utils.OkHttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,7 +69,7 @@ public class KnowledgesFragment extends BaseFragment implements SwipeRefreshLayo
             loadingDialog = new SpotsDialog(getActivity(), "加载中...", R.style.Loading);
             loadingDialog.show();
         }
-        OkHttpUtil.getJSON(String.format(Constant.URL.Photo, page), this);
+        OkHttpUtil.getJSON(String.format(Constant.URL.Knowleges, page), this);
     }
 
 
@@ -124,8 +124,9 @@ public class KnowledgesFragment extends BaseFragment implements SwipeRefreshLayo
 
     @Override
     public void onItemClick(View v, int position) {
-        Intent intent = new Intent(getActivity(), PhotoDetialActivity.class);
-        intent.putExtra("data",results.get(position));
+        Intent intent = new Intent(getActivity(), H5Activity.class);
+        intent.putExtra("title",results.get(position).getDesc());
+        intent.putExtra("url",results.get(position).getUrl());
         startActivity(intent);
     }
 

@@ -1,9 +1,11 @@
 package com.example.a11355.myshowdou.Videos;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,19 +14,23 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.example.a11355.myshowdou.Base.AbsRecyclerAdapter;
 import com.example.a11355.myshowdou.Base.BaseActivity;
 import com.example.a11355.myshowdou.Base.BasePresenter;
 import com.example.a11355.myshowdou.Base.OnAdapterCallbackListener;
 import com.example.a11355.myshowdou.R;
+import com.example.a11355.myshowdou.Utils.BitMapUtil;
 import com.example.a11355.myshowdou.Utils.Constant;
 import com.example.a11355.myshowdou.Utils.OkHttpUtil;
+import com.example.a11355.myshowdou.Utils.PreferencesUtil;
 import com.example.a11355.myshowdou.Utils.ToastUtil;
 import com.example.a11355.myshowdou.Videos.videomodel.VideoPlayer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -42,7 +48,7 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
     private VideoListEntity.DataBean data;
     private int startPage = 0;
     private List<VideoListEntity.DataBean> dataBeen = new ArrayList<>();
-    private int urlPosion = 2;
+    private int urlPosion = 0;
     private Gson gson = new GsonBuilder().create();
     private VideoRVAdapter videoRVAdapter;
     private Toolbar toolbar;
@@ -58,7 +64,8 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
 
     @Override
     protected void init() {
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+         urlPosion = getIntent().getIntExtra("urlPosion", 0);
         data = getIntent().getParcelableExtra("data");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,8 +78,19 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String filePath = Environment.getExternalStorageDirectory() + "/Android/data/" +
+                        getPackageName() + "/cache/logo.jpg";
+                if (!new File(filePath).exists()) {
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                    BitMapUtil.saveBitmap2File(bitmap, filePath);
+                }
+                if (position==0){
+                    PreferencesUtil.showShare(VideoDetialActivity.this,data.getTitle(),data.getMp4_url(),data.getDescription(),filePath,null);
+
+                }else {
+                    PreferencesUtil.showShare(VideoDetialActivity.this,dataBeen.get(position).getTitle(),dataBeen.get(position).getMp4_url(),dataBeen.get(position).getDescription(),filePath,null);
+
+                }
             }
         });
         Player.playVideo(data.getMp4_url(), data.getTitle());
@@ -269,5 +287,11 @@ public class VideoDetialActivity extends BaseActivity implements OkHttpUtil.OnDa
         }
 
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
     }
 }

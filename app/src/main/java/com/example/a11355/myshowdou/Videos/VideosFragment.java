@@ -148,6 +148,7 @@ public class VideosFragment extends BaseFragment implements SwipeRefreshLayout.O
         if (dataBeen.size()>position){
             Intent intent = new Intent(getActivity(), VideoDetialActivity.class);
             intent.putExtra("data",dataBeen.get(position));
+            intent.putExtra("urlPosion",urlPosion);
             startActivity(intent);
         }
 
@@ -155,5 +156,7 @@ public class VideosFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     }
 
-
+    public void setUrlPosion(int urlPosion) {
+        this.urlPosion = urlPosion;
+    }
 }

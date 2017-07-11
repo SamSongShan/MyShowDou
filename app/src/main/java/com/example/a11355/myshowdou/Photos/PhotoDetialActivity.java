@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 
 import com.bm.library.PhotoView;
 import com.example.a11355.myshowdou.R;
+import com.example.a11355.myshowdou.Utils.PreferencesUtil;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
@@ -37,7 +37,7 @@ public class PhotoDetialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PhotoEntity.ResultsBean data = getIntent().getParcelableExtra("data");
+        final PhotoEntity.ResultsBean data = getIntent().getParcelableExtra("data");
         setContentView(R.layout.activity_photo_detial);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,8 +49,8 @@ public class PhotoDetialActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                PreferencesUtil.showShare(PhotoDetialActivity.this,data.getDesc(),data.getUrl(),data.getWho(),data.getUrl(),null);
+
             }
         });
         photoView.enable();
