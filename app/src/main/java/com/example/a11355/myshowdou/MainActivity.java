@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
     private DownloadDialog downloadDialog;
     private Menu menu;
     private MenuItem item;
-
+    private boolean isCheck;
 
     @Override
     protected int getViewResId() {
@@ -154,6 +154,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
                 newVersionDialog.setOnItemClickListener(this);
                 newVersionDialog.show(getFragmentManager());
                 break;
+            default:
+                if (isCheck) {
+                    ToastUtil.initToast(this, "已是最新版本，无需更新");
+                }
+                break;
         }
 
 
@@ -198,7 +203,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         //noinspection SimplifiableIfStatement
         if (id == R.id.rd) {//热点视频
             if (this.item != null) {
-                if (videosFragment!=null){
+                if (videosFragment != null) {
                     this.item.setTitle("热点视频");
                     videosFragment.setUrlPosion(0);
                     videosFragment.onRefresh();
@@ -208,7 +213,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         }
         if (id == R.id.yl) {//娱乐视频
             if (this.item != null) {
-                if (videosFragment!=null){
+                if (videosFragment != null) {
                     this.item.setTitle("娱乐视频");
                     videosFragment.setUrlPosion(1);
                     videosFragment.onRefresh();
@@ -218,7 +223,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         }
         if (id == R.id.gx) {//搞笑视频
             if (this.item != null) {
-                if (videosFragment!=null){
+                if (videosFragment != null) {
                     this.item.setTitle("搞笑视频");
                     videosFragment.setUrlPosion(2);
                     videosFragment.onRefresh();
@@ -228,7 +233,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         }
         if (id == R.id.jp) {//精品视频
             if (this.item != null) {
-                if (videosFragment!=null){
+                if (videosFragment != null) {
                     this.item.setTitle("精品视频");
                     videosFragment.setUrlPosion(3);
                     videosFragment.onRefresh();
@@ -249,13 +254,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_gallery) {//打电话
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            Uri data = Uri.parse("tel:" + "13632840502");
+            intent.setData(data);
+            startActivity(intent);
+        } else if (id == R.id.nav_slideshow) {//更新
+           // ToastUtil.initToast(this, "已是最新版本，无需更新");
+            isCheck = true;
+            checkStoragePermission();
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {//分享
             String filePath = Environment.getExternalStorageDirectory() + "/Android/data/" +
                     getPackageName() + "/cache/logo.jpg";
             if (!new File(filePath).exists()) {
@@ -472,4 +483,5 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
             }
         }
     }
+
 }
