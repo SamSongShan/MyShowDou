@@ -15,7 +15,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_gravity="center"
         android:id="@+id/sdv"
-        android:layout_width="60dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         fresco:viewAspectRatio="1.33"
         fresco:placeholderImageScaleType="fitCenter"
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="点击登录"
+        android:text="点击头像登录微信"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView

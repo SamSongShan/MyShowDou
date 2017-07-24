@@ -43,8 +43,10 @@ import com.example.a11355.myshowdou.Utils.Util;
 import com.example.a11355.myshowdou.Videos.VideosFragment;
 import com.example.a11355.myshowdou.custom.DownloadDialog;
 import com.example.a11355.myshowdou.custom.NewVersionDialog;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,6 +54,10 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.wechat.friends.Wechat;
 
 import static android.R.attr.versionName;
 
@@ -61,7 +67,7 @@ import static android.R.attr.versionName;
 *
 * */
 public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
-        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener, MainView {
+        implements NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseDialog.OnItemClickListener, View.OnClickListener, OkHttpUtil.OnProgressListener, MainView, PlatformActionListener {
 
     @BindView(R.id.rg)
     RadioGroup rg;
@@ -85,6 +91,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
     private Menu menu;
     private MenuItem item;
     private boolean isCheck;
+    private View headerLayout;
+    private SimpleDraweeView sdv;
+    private TextView tvname;
+    private TextView tvSigning;
 
     @Override
     protected int getViewResId() {
@@ -122,6 +132,16 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         navigationView.setNavigationItemSelectedListener(this);
         rg.setOnCheckedChangeListener(this);
         rg.getChildAt(page).performClick();
+
+        //NavigationView中获取headerLayout
+        headerLayout = navigationView.getHeaderView(0);
+
+        sdv = (SimpleDraweeView) headerLayout.findViewById(R.id.sdv);
+        tvname = (TextView) headerLayout.findViewById(R.id.tv_name);
+        tvSigning = (TextView) headerLayout.findViewById(R.id.tv_signing);
+
+        sdv.setOnClickListener(this);
+
     }
 
     @Override
@@ -260,7 +280,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
             intent.setData(data);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {//更新
-           // ToastUtil.initToast(this, "已是最新版本，无需更新");
+            // ToastUtil.initToast(this, "已是最新版本，无需更新");
             isCheck = true;
             checkStoragePermission();
 
@@ -297,6 +317,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         hideFragments(transaction);
         switch (checkedId) {
             case R.id.rb_news://新闻
+
                 page = 0;
                 if (newsFragment == null) {
                     newsFragment = new NewsFragment();
@@ -424,7 +445,40 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
 
     @Override
     public void onClick(View v) {
-        jumpInstall();
+
+        switch (v.getId()) {
+            case R.id.sdv:
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+                ShareSDK.initSDK(this);
+                authorize(ShareSDK.getPlatform(this, Wechat.NAME));
+                break;
+            case R.id.btn_installApp:
+                jumpInstall();
+                break;
+        }
+
+    }
+    private void authorize(Platform plat) {
+        if (plat == null) {
+            // popupOthers();
+            return;
+        }
+        //判断指定平台是否已经完成授权
+        if (plat.isAuthValid()) {
+            plat.removeAccount();
+           /* String userId = plat.getDb().getUserId();
+            if (userId != null) {
+                UIHandler.sendEmptyMessage(MSG_USERID_FOUND, this);
+                login(LoginMark, userId);
+                return;
+            }*/
+        }
+        plat.setPlatformActionListener(this);
+        // true不使用SSO授权，false使用SSO授权
+        plat.SSOSetting(false);
+        //获取用户资料
+        plat.showUser(null);
     }
 
     /**
@@ -484,4 +538,24 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         }
     }
 
+
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        String userIcon = platform.getDb().getUserIcon();
+        String platformNname = platform.getDb().getPlatformNname();
+        String userName = platform.getDb().getUserName();
+        sdv.setImageURI(Uri.parse(userIcon));
+        tvname.setText(userName);
+        tvSigning.setText(platformNname);
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+
+    }
 }

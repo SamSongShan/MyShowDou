@@ -23,9 +23,11 @@ public class App extends Application {
         OkHttpUtil.initOkHttp();
         Fresco.initialize(this, ConfigConstants.getImagePipelineConfig(this));
         initCrashReport();
+
     }
 
     private void initCrashReport() {
+        getApplicationContext();
         LogReport.getInstance()
                 .setCacheSize(30 * 1024 * 1024)//支持设置缓存大小，超出后清空
                 .setLogDir(getApplicationContext(), "sdcard/" + this.getString(this.getApplicationInfo().labelRes) + "/")//定义路径为：sdcard/[app name]/
