@@ -17,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -57,7 +58,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.tencent.qq.QQ;
 
 import static android.R.attr.versionName;
 
@@ -95,6 +96,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
     private SimpleDraweeView sdv;
     private TextView tvname;
     private TextView tvSigning;
+    private String userIcon;
+    private String platformNname;
+    private String userName;
+    private boolean isLogin;
 
     @Override
     protected int getViewResId() {
@@ -448,10 +453,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
 
         switch (v.getId()) {
             case R.id.sdv:
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-                ShareSDK.initSDK(this);
-                authorize(ShareSDK.getPlatform(this, Wechat.NAME));
+               /* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);*/
+               if (isLogin){
+                   ToastUtil.initToast(this,"已经登录");
+               }else {
+                   ShareSDK.initSDK(this);
+                   authorize(ShareSDK.getPlatform(this, QQ.NAME));
+               }
+
                 break;
             case R.id.btn_installApp:
                 jumpInstall();
@@ -489,11 +499,20 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
         if (apkFile.exists()) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+
+            if (Build.VERSION.SDK_INT<Build.VERSION_CODES.N){
+                intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+
+            }else {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);//给目标应用一个临时的授权
+                Uri uriForFile = FileProvider.getUriForFile(this, "com.example.a11355.myshowdou.FileProvider", apkFile);
+                intent.setDataAndType(uriForFile,"application/vnd.android.package-archive");
+            }
             startActivity(intent);
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
+
 
     @Override
     public void onProgress(final int rate) {
@@ -541,12 +560,21 @@ public class MainActivity extends BaseActivity<MainView, MainPresenterImpl>
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        String userIcon = platform.getDb().getUserIcon();
-        String platformNname = platform.getDb().getPlatformNname();
-        String userName = platform.getDb().getUserName();
-        sdv.setImageURI(Uri.parse(userIcon));
-        tvname.setText(userName);
-        tvSigning.setText(platformNname);
+        userIcon = platform.getDb().getUserIcon();
+        platformNname = platform.getDb().getPlatformNname();
+        userName = platform.getDb().getUserName();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sdv.setImageURI(Uri.parse(userIcon));
+                tvname.setText(userName);
+                 tvSigning.setText(platformNname);
+
+                isLogin = true;
+            }
+        });
+
+
     }
 
     @Override
